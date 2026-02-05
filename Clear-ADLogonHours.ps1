@@ -53,16 +53,16 @@
 param()
 
 # .~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.
-# |  PARAMETROS FIXOS - Altere aqui conforme necessidade              |
+# |  PARAMETROS FIXOS - Altere aqui conforme necessidade             |
 # .~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.
-# |                                                                   |
-# |  $Modo:                                                           |
-# |    "CLEAR"   → Remove restricao de todos da lista (libera 24/7)   |
-# |    "RESTORE" → Restaura valor original do backup CSV              |
-# |                                                                   |
+# |                                                                  |
+# |  $Modo:                                                          |
+# |    "CLEAR"   → Remove restricao de todos da lista (libera 24/7)  |
+# |    "RESTORE" → Restaura valor original do backup CSV             |
+# |                                                                  |
 # |  $ArquivoUsuarios: Lista .txt ou .csv (usado no modo CLEAR)      |
-# |  $ArquivoBackup:   CSV do Set-ADLogonHours (usado no modo RESTORE)|
-# |                                                                   |
+# |  $ArquivoBackup:  CSV do Set-ADLogonHours (usado no modo RESTORE)|
+# |                                                                  |
 # .~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.
 $Modo              = "CLEAR"       # "CLEAR" ou "RESTORE"
 $ArquivoUsuarios   = ".\usuarios.txt"  # Altere para o caminho da sua lista
@@ -86,7 +86,7 @@ $LogPath           = ".\ClearLogonHours_$(Get-Date -Format 'yyyyMMdd_HHmmss').lo
 
 Write-Host ""
 Write-Host "  .~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~." -ForegroundColor DarkYellow
-Write-Host "  |  Verificando pre-requisitos...                           |" -ForegroundColor DarkYellow
+Write-Host "  |  Verificando pre-requisitos...                          |" -ForegroundColor DarkYellow
 Write-Host "  .~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~." -ForegroundColor DarkYellow
 Write-Host ""
 
@@ -212,7 +212,7 @@ if (-not $preReqOk) {
 }
 
 Write-Host "  .~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~." -ForegroundColor Green
-Write-Host "  |  Todos os pre-requisitos OK! Iniciando execucao...       |" -ForegroundColor Green
+Write-Host "  |  Todos os pre-requisitos OK! Iniciando execucao...      |" -ForegroundColor Green
 Write-Host "  .~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~." -ForegroundColor Green
 Write-Host ""
 
@@ -261,13 +261,13 @@ function Show-Banner {
     $banner = @"
 
     .~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.
-    |       CLEAR-AD LOGON HOURS  |  by Lyon.                       |
-    |       Ailton Rocha          |  v1.0.0                         |
+    |       CLEAR-AD LOGON HOURS  |  by Lyon.                      |
+    |       Ailton Rocha          |  v1.0.0                        |
     .~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.
     |  Modo de operacao  : $($modoDescricao.PadRight(41))|
     |  Arquivo de entrada: $($arquivoInfo.PadRight(41))|
     .~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.
-    |  ATRIBUTO MODIFICADO: logonHours (SOMENTE ESTE)               |
+    |  ATRIBUTO MODIFICADO: logonHours (SOMENTE ESTE)              |
     .~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.
 
 "@
@@ -422,7 +422,7 @@ if ($Modo -eq "RESTORE") {
     Write-Log "Arquivo de backup: $ArquivoBackup"
 
     Write-Host "  .~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~." -ForegroundColor DarkCyan
-    Write-Host "  |  Restaurando logonHours dos usuarios (backup CSV)...     |" -ForegroundColor DarkCyan
+    Write-Host "  |  Restaurando logonHours dos usuarios (backup CSV)...    |" -ForegroundColor DarkCyan
     Write-Host "  .~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~." -ForegroundColor DarkCyan
     Write-Host ""
 
@@ -454,7 +454,7 @@ if ($Modo -eq "RESTORE") {
     Write-Log "Arquivo de usuarios: $ArquivoUsuarios"
 
     Write-Host "  .~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~." -ForegroundColor DarkCyan
-    Write-Host "  |  Removendo restricoes de logon dos usuarios...           |" -ForegroundColor DarkCyan
+    Write-Host "  |  Removendo restricoes de logon dos usuarios...          |" -ForegroundColor DarkCyan
     Write-Host "  .~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~." -ForegroundColor DarkCyan
     Write-Host ""
 
@@ -512,7 +512,7 @@ $resumo = @"
   |  Falha               : $($failCount.ToString().PadRight(40))|
   .~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.
   |  Atributo modificado : logonHours (SOMENTE ESTE)             |
-  |  Arquivo de log      : $($LogPath.PadRight(40))|
+  |  Arquivo de log      : $($LogPath.PadRight(40))      | 
   .~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.
 
 "@
