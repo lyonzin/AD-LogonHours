@@ -604,11 +604,3 @@ Este projeto esta licenciado sob a [MIT License](LICENSE).
 - GitHub: [@lyonzin](https://github.com/lyonzin)
 
 ---
-
-```
-.~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.
-|  "Restringir horarios de logon no AD nunca foi tao simples."  |
-|                                                               |
-|  By Ailton Rocha (Lyon.)                                     |
-.~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.
-```
