@@ -1,46 +1,46 @@
 <#
 .~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.
-|   ____       _        _    ____  _                            _   _                          |
+|   ____       _        _    ____  _                            _   _                         |
 |  / ___|  ___| |_     / \  |  _ \| |    ___   __ _  ___  _ _ | | | | ___  _   _ _ __ ___     |
 |  \___ \ / _ \ __|   / _ \ | | | | |   / _ \ / _` |/ _ \| ' \| |_| |/ _ \| | | | '__/ __|    |
 |   ___) |  __/ |_   / ___ \| |_| | |__| (_) | (_| | (_) | | ||  _  | (_) | |_| | |  \__ \    |
 |  |____/ \___|\__| /_/   \_\____/|_____\___/ \__, |\___/|_| ||_| |_|\___/ \__,_|_|  |___/    |
-|                                              |___/                                           |
+|                                              |___/                                          |
 .~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.
-|  Restricao de Horario de Logon via Active Directory                                          |
+|  Restricao de Horario de Logon via Active Directory                                         |
 .~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.
-|  Criado por:          Ailton Rocha (Lyon.)                                                   |
-|  GitHub:              github.com/lyonzin                                                     |
-|  Data de Criacao:     2026-01-27                                                             |
-|  Ultima Modificacao:  2026-01-27                                                             |
-|  Versao:              1.0.0                                                                  |
+|  Criado por:          Ailton Rocha (Lyon.)                                                  |
+|  GitHub:              github.com/lyonzin                                                    |
+|  Data de Criacao:     2026-01-27                                                            |
+|  Ultima Modificacao:  2026-01-27                                                            |
+|  Versao:              1.0.0                                                                 |
 .~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.
-|                                                                                              |
-|  DESCRICAO:                                                                                  |
-|  Configura o atributo logonHours no Active Directory para restringir                         |
-|  os horarios em que usuarios podem autenticar no dominio.                                    |
-|                                                                                              |
-|  COMO FUNCIONA:                                                                              |
+|                                                                                             |
+|  DESCRICAO:                                                                                 |
+|  Configura o atributo logonHours no Active Directory para restringir                        |
+|  os horarios em que usuarios podem autenticar no dominio.                                   |
+|                                                                                             |
+|  COMO FUNCIONA:                                                                             |
 |  - O AD usa um byte array de 21 bytes (168 bits = 7 dias x 24 horas)                        |
 |  - Cada bit representa 1 hora da semana (1 = pode logar, 0 = bloqueado)                     |
-|  - O AD armazena tudo em UTC, o script converte BRT -> UTC automaticamente                   |
-|  - Gera backup automatico do estado anterior de cada usuario em CSV                          |
-|                                                                                              |
-|  VARIAVEIS PRINCIPAIS:                                                                       |
+|  - O AD armazena tudo em UTC, o script converte BRT -> UTC automaticamente                  |
+|  - Gera backup automatico do estado anterior de cada usuario em CSV                         |
+|                                                                                             |
+|  VARIAVEIS PRINCIPAIS:                                                                      |
 |  - $HorarioPermitidoDe  = Hora que o usuario PODE comecar a logar (BRT)                     |
 |  - $HorarioPermitidoAte = Hora que o usuario NAO PODE mais logar (BRT)                      |
-|  - Se De > Ate, o script detecta range noturno (cruza meia-noite)                            |
-|                                                                                              |
+|  - Se De > Ate, o script detecta range noturno (cruza meia-noite)                           |
+|                                                                                             |
 |  EXEMPLO PRODUCAO (bloquear 23:00 ate 03:00 BRT):                                           |
-|    $HorarioPermitidoDe  = 3   --> pode logar a partir das 03:00                              |
-|    $HorarioPermitidoAte = 23  --> nao pode mais a partir das 23:00                           |
-|                                                                                              |
-|  NOTA IMPORTANTE:                                                                            |
-|  O AD trabalha em blocos de 1 hora (nao existe granularidade de minutos).                    |
-|  O bloqueio impede NOVO logon, mas NAO desconecta quem ja esta logado.                       |
-|  Para forcar logoff, habilitar na GPO:                                                       |
-|  "Network Security: Force logoff when logon hours expire"                                    |
-|                                                                                              |
+|    $HorarioPermitidoDe  = 3   --> pode logar a partir das 03:00                             |
+|    $HorarioPermitidoAte = 23  --> nao pode mais a partir das 23:00                          |
+|                                                                                             |
+|  NOTA IMPORTANTE:                                                                           |
+|  O AD trabalha em blocos de 1 hora (nao existe granularidade de minutos).                   |
+|  O bloqueio impede NOVO logon, mas NAO desconecta quem ja esta logado.                      |
+|  Para forcar logoff, habilitar na GPO:                                                      |
+|  "Network Security: Force logoff when logon hours expire"                                   |
+|                                                                                             |
 .~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.
 
 .SYNOPSIS
@@ -54,12 +54,12 @@
 param()
 
 # .~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.
-# |  PARAMETROS FIXOS - Altere aqui conforme necessidade              |
+# |  PARAMETROS FIXOS - Altere aqui conforme necessidade             |
 # .~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.
-# |                                                                   |
+# |                                                                  |
 # |  BLOQUEIO desejado: 23:00 ate 03:00 (BRT)                        |
 # |  Ou seja, o usuario SO PODE logar entre 03:00 e 23:00            |
-# |                                                                   |
+# |                                                                  |
 # .~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.
 $UserList             = ".\usuarios.txt"  # Altere para o caminho da sua lista
 $HorarioPermitidoDe  = 3     # Usuario PODE logar A PARTIR deste horario (BRT)
@@ -84,7 +84,7 @@ $LogPath             = ".\LogonHours_$(Get-Date -Format 'yyyyMMdd_HHmmss').log"
 
 Write-Host ""
 Write-Host "  .~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~." -ForegroundColor DarkYellow
-Write-Host "  |  Verificando pre-requisitos...                           |" -ForegroundColor DarkYellow
+Write-Host "  |  Verificando pre-requisitos...                          |" -ForegroundColor DarkYellow
 Write-Host "  .~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~." -ForegroundColor DarkYellow
 Write-Host ""
 
@@ -490,7 +490,7 @@ Write-Log "`n$(Format-LogonHoursReadable $logonBytes 'UTC')`n"
 #   3. Se ja tem logonHours: Clear primeiro, depois Add (evita erro "attribute already present")
 #   4. Se nao tem: Add direto
 Write-Host "  .~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~." -ForegroundColor DarkCyan
-Write-Host "  |  Aplicando restricao nos usuarios...                     |" -ForegroundColor DarkCyan
+Write-Host "  |  Aplicando restricao nos usuarios...                    |" -ForegroundColor DarkCyan
 Write-Host "  .~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~." -ForegroundColor DarkCyan
 Write-Host ""
 
@@ -547,8 +547,8 @@ $statusColor = if ($failCount -eq 0) { "Green" } else { "Yellow" }
 $resumo = @"
 
   .~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.
-  |                    RESUMO DA EXECUCAO                          |
-  |            Ailton Rocha (Lyon.)  |  v1.0.0                       |
+  |                    RESUMO DA EXECUCAO                        |
+  |            Ailton Rocha (Lyon.)  |  v1.0.0                   |
   .~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.
   |  Total de usuarios  : $($totalUsers.ToString().PadRight(40))|
   |  Sucesso             : $($successCount.ToString().PadRight(40))|
