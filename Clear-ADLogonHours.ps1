@@ -503,15 +503,15 @@ $statusColor = if ($failCount -eq 0) { "Green" } else { "Yellow" }
 $resumo = @"
 
   .~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.
-  |                    RESUMO DA EXECUCAO                          |
-  |            Ailton Rocha (Lyon.)  |  v1.0.0                       |
+  |                    RESUMO DA EXECUCAO                         |
+  |            Ailton Rocha (Lyon.)  |  v1.0.0                    |
   .~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.
   |  Modo de operacao   : $($modoResumo.PadRight(40))|
   |  Total de usuarios  : $($totalUsers.ToString().PadRight(40))|
   |  Sucesso             : $($successCount.ToString().PadRight(40))|
   |  Falha               : $($failCount.ToString().PadRight(40))|
   .~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.
-  |  Atributo modificado : logonHours (SOMENTE ESTE)               |
+  |  Atributo modificado : logonHours (SOMENTE ESTE)             |
   |  Arquivo de log      : $($LogPath.PadRight(40))|
   .~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.
 
