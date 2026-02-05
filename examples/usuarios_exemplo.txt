@@ -1,0 +1,20 @@
+# ============================================================================
+# LISTA DE USUARIOS - EXEMPLO
+# ============================================================================
+# Um SamAccountName por linha
+# Linhas iniciando com # sao comentarios (ignoradas)
+# Linhas em branco sao ignoradas
+# ============================================================================
+
+# Usuarios do setor de Vendas
+joao.silva
+maria.santos
+pedro.costa
+
+# Usuarios do setor Financeiro
+ana.oliveira
+carlos.ferreira
+
+# Usuarios temporarios (estagiarios)
+temp.estagiario01
+temp.estagiario02
